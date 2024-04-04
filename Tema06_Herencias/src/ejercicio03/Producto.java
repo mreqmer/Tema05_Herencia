@@ -21,7 +21,7 @@ public class Producto {
 	 * @param precio
 	 */
 	public Producto(String nombre, double precio) {
-		if (!nombre.equals("") || nombre != null) {
+		if (nombre != null && !nombre.equals("") ) {
 			this.nombre = nombre;
 		}
 		if (precio > 0) {
