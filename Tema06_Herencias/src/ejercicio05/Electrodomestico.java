@@ -6,14 +6,14 @@ package ejercicio05;
 public class Electrodomestico {
 
 	/**
-	 * 
+	 * Colores disponibles
 	 */
 	enum Color {
 		BLANCO, NEGRO, ROJO, AZUL, GRIS;
 	}
 
 	/**
-	 * 
+	 * Posibles opciones de consumo
 	 */
 	enum ConsumoEnergetico {
 		A, B, C, D, E, F
@@ -21,51 +21,67 @@ public class Electrodomestico {
 	}
 
 	/**
-	 * 
+	 * Precio del producto
 	 */
 	protected double precioBase = 100;
 
 	/**
-	 * 
+	 * Colores del producto
 	 */
 	protected Color color = Color.BLANCO;
 
 	/**
-	 * 
+	 * Consumo del producto
 	 */
 	protected ConsumoEnergetico consumoEnergetico = ConsumoEnergetico.F;
 
 	/**
-	 * 
+	 * Peso del producto
 	 */
 	protected double peso = 5;
 
 	/**
-	 * 
+	 * Constructor sin parámetros
 	 */
-
-
 	public Electrodomestico() {
+
 	}
 
 	/**
-	 * 
+	 * Constructor con parámetos
+	 * @param precioBase
+	 * @param peso
+	 */
+	public Electrodomestico(double precioBase, double peso) {
+		if (precioBase > 0) {
+			this.precioBase = precioBase;
+		}
+
+		if (peso > 0) {
+			this.peso = peso;
+		}
+	}
+
+	/**
+	 * Constructor con parámetros
 	 * @param precioBase
 	 * @param color
 	 * @param consumoEnergetico
 	 * @param peso
 	 */
-	public Electrodomestico(double precioBase, Color color, ConsumoEnergetico consumoEnergetico, double peso) {
+	public Electrodomestico(double precioBase, String color, char consumoEnergetico, double peso) {
 		if (precioBase > 0) {
 			this.precioBase = precioBase;
 		}
-		this.color = color;
 
-		this.consumoEnergetico = consumoEnergetico;
+		this.color = comprobarColor(color);
+
+		this.consumoEnergetico = comprobarConsumoEnergetico(consumoEnergetico);
 
 		if (peso > 0) {
 			this.peso = peso;
 		}
+
 	}
 
 	/**
@@ -98,8 +114,8 @@ public class Electrodomestico {
 	 * 
 	 * @param color
 	 */
-	public void setColor(Color color) {
-		this.color = color;
+	public void setColor(String color) {
+		this.color = comprobarColor(color);
 	}
 
 	/**
@@ -109,13 +125,13 @@ public class Electrodomestico {
 	public ConsumoEnergetico getConsumoEnergetico() {
 		return consumoEnergetico;
 	}
-
+	
 	/**
 	 * 
 	 * @param consumoEnergetico
 	 */
-	public void setConsumoEnergetico(ConsumoEnergetico consumoEnergetico) {
-		this.consumoEnergetico = consumoEnergetico;
+	public void setConsumoEnergetico(char consumoEnergetico) {
+		this.consumoEnergetico = comprobarConsumoEnergetico(consumoEnergetico);
 	}
 
 	/**
@@ -131,71 +147,108 @@ public class Electrodomestico {
 	 * @param peso
 	 */
 	public void setPeso(double peso) {
-
 		if (peso > 0) {
 			this.peso = peso;
 		}
 	}
 
 	/**
-	 * 
+	 * Comprueba que se haya introducido un consumo válido, si no le asina F de predeterminado
 	 * @param letra
 	 * @return
 	 */
-	private boolean comprobarConsumoEnergetico(char letra) {
+	public ConsumoEnergetico comprobarConsumoEnergetico(char letra) {
 
-		boolean existe = false;
-		String letraCadena = String.valueOf(letra);
+		String letraString = Character.toString(letra);
 
-		for (ConsumoEnergetico consumo : ConsumoEnergetico.values()) {
+		ConsumoEnergetico consumo = ConsumoEnergetico.F;
 
-			if (consumo.name().equals(letraCadena)) {
-				existe = true;
+		for (ConsumoEnergetico ce : ConsumoEnergetico.values()) {
+
+			if (ce.name().equals(letraString)) {
+				consumo = ConsumoEnergetico.valueOf(letraString);
 			}
-
 		}
 
-		return existe;
+		return consumo;
+	}
+
+	/**
+	 * Comprueba que se haya introduciddo un color válido, si no se pone Blanco de predeterminado
+	 * @param color
+	 * @return
+	 */
+	public Color comprobarColor(String color) {
+
+		Color c = Color.BLANCO;
+
+		for (Color valor : Color.values()) {
+
+			if (valor.name().equals(color)) {
+				c = Color.valueOf(color);
+			}
+		}
+
+		return c;
 
 	}
 
 	/**
-	 * 
+	 * Calcula el precio que tendrá el producto según su consumo y su peso
 	 */
 	public void precioFinal() {
 
-		boolean encontrado = false;
-		int i = -1;
-		int modificadorPeso = 0;
-		int modificadorEficiencia = 0;
+		switch (this.consumoEnergetico) {
 
-		while (i < ConsumoEnergetico.values().length && !encontrado) {
-			if (ConsumoEnergetico.values()[i] == this.consumoEnergetico) {
-				encontrado = true;
-			}else {
-				i++;
-			}
+		case A -> {
+			this.precioBase += 100;
+		}
+		case B -> {
+			this.precioBase += 80;
+		}
+		case C -> {
+			this.precioBase += 60;
+		}
+		case D -> {
+			this.precioBase += 50;
+		}
+		case E -> {
+			this.precioBase += 30;
+		}
+		case F -> {
+			this.precioBase += 10;
+		}
 
 		}
 
-		// desde el precio máximo le resta la posición del enum menos 20
-		modificadorEficiencia = 100 - (i * 20);
-
-		if (this.precioBase >= 0 && this.precioBase <= 19) {
-			modificadorPeso = 10;
-		}
-		if (this.precioBase >= 20 && this.precioBase <= 49) {
-			modificadorPeso = 50;
-		}
-		if (this.precioBase >= 50 && this.precioBase <= 79) {
-			modificadorPeso = 80;
-		}
-		if (this.precioBase >= 80) {
-			modificadorPeso = 100;
+		if (peso > 0 && peso < 20) {
+			this.precioBase += 10;
+		} else if (peso >= 20 && peso < 50) {
+			this.precioBase += 50;
+		} else if (peso >= 50 && peso < 80) {
+			this.precioBase += 80;
+		} else if (peso >= 80) {
+			this.precioBase += 100;
 		}
 
-		this.precioBase += (modificadorEficiencia + modificadorPeso);
+	}
 
+	/**
+	 * Método to String
+	 */
+	@Override
+	public String toString() {
+		String cadena = "";
+
+		cadena += "Precio: " + this.precioBase + "\n";
+
+		cadena += "Color: " + this.color + "\n";
+
+		cadena += "Consumo: " + this.consumoEnergetico + "\n";
+
+		cadena += "Peso: " + this.peso + "\n";
+
+		return cadena;
 	}
 
 }
