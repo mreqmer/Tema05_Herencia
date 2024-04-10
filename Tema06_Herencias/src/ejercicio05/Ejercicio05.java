@@ -22,13 +22,13 @@ public class Ejercicio05 {
                 case 1 ->{
                    pos = posicionLibre(pArray);
                    if(pos!= -1){
-                       newFigura(opc);
+                      pArray[pos]=newFigura(opc);
                    }
                    
                  }case 2 ->{
                    pos = posicionLibre(pArray);
                    if(pos!= -1){
-                       newFigura(opc);
+                    pArray[pos]=newFigura(opc);
                    }
                  }case 3 ->{
        
@@ -104,13 +104,18 @@ public class Ejercicio05 {
         return pos;
     }
 
-    //falta por hacer esto
     public static void muestraInformacion(Poliedro array[]){
 
         for(Poliedro valor : array){
-            System.out.println(valor.toString());
-            System.out.println(valor.area());
+            if(valor != null){
+                System.out.println();
+                System.out.println(valor.toString());
+                System.out.println("Área: " + valor.area());
+            }
+           
         }
+
+        
     }
 
 }
