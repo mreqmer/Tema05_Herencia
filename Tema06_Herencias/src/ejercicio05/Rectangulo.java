@@ -16,7 +16,7 @@ public class Rectangulo extends Poliedro {
      * Constructor sin parámetros
      */
     public Rectangulo() {
-        super();
+        super(3);
     }
 
     /**
@@ -26,7 +26,7 @@ public class Rectangulo extends Poliedro {
      * @param lado2
      */
     public Rectangulo(int numeroLados, double lado1, double lado2) {
-        super(numeroLados);
+        super(3);
         this.lado1 = lado1;
         this.lado2 = lado2;
     }
